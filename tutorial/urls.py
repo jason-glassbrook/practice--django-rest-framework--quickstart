@@ -16,15 +16,30 @@ Including another URLconf
 
 from django.urls import path, include
 from django.contrib import admin
+from rest_framework import routers
 
 from quickstart import views
 
 ############################################################
 
+router = routers.DefaultRouter()
+router.register("users", views.UserViewSet)
+router.register("groups", views.GroupViewSet)
+
 urlpatterns = [
+    path(
+        "",
+        include(router.urls),
+        name="index",
+    ),
     path(
         "admin/",
         admin.site.urls,
         name="admin",
+    ),
+    path(
+        "api/auth/",
+        include("rest_framework.urls", namespace="rest_framework"),
+        name="api_auth",
     ),
 ]
